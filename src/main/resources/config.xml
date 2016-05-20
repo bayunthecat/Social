@@ -11,6 +11,15 @@
 
     <context:component-scan base-package="ua.nure.social"/>
 
-    <!-- Bean definitions here -->
+    <bean id="twitterUserMapperConfiguration" class="ua.nure.social.configuration.TwitterUserMapperConfiguration">
+        <property name="ignoredFields" >
+            <list>
+                <value>urlEntity</value>
+                <value>showAllInlineMedia</value>
+                <value>isVerified</value>
+                <value>translator</value>
+            </list>
+        </property>
+    </bean>
 
 </beans>

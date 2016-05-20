@@ -1,5 +1,6 @@
 package ua.nure.social.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseItem {
@@ -7,6 +8,10 @@ public abstract class BaseItem {
     private String id;
 
     private Map<String, Object> properties;
+
+    public BaseItem() {
+        properties = new HashMap<>();
+    }
 
     public String getId() {
         return id;
@@ -17,6 +22,7 @@ public abstract class BaseItem {
     }
 
     public <T> T setProperty(String name, T property) {
+        properties.put(name, property);
         return property;
     }
 
@@ -37,4 +43,11 @@ public abstract class BaseItem {
         return propertiesNames;
     }
 
+    @Override
+    public String toString() {
+        return "BaseItem{" +
+                "id='" + id + '\'' +
+                ", properties=" + properties +
+                '}';
+    }
 }

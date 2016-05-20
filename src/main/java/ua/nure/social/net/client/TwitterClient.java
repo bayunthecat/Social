@@ -1,10 +1,6 @@
 package ua.nure.social.net.client;
 
-import com.google.gson.Gson;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.User;
+import twitter4j.*;
 
 public class TwitterClient {
 
@@ -20,7 +16,18 @@ public class TwitterClient {
         return user;
     }
 
-    public Gson getUsersByIds() {
-        return new Gson();
+    public Object getUsersByIds() {
+        return null;
+    }
+
+    public Object getFollowers(String id) {
+        try {
+            PagableResponseList<User> response = twitter.getFollowersList(id, -1);
+            response.getNextCursor();
+            return response;
+        } catch (TwitterException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }
