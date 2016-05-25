@@ -9,17 +9,8 @@
        http://www.springframework.org/schema/context
        http://www.springframework.org/schema/context/spring-context.xsd">
 
-    <context:component-scan base-package="ua.nure.social"/>
+    <context:annotation-config/>
 
-    <bean id="twitterUserMapperConfiguration" class="ua.nure.social.configuration.TwitterUserMapperConfiguration">
-        <property name="ignoredFields" >
-            <list>
-                <value>urlEntity</value>
-                <value>showAllInlineMedia</value>
-                <value>isVerified</value>
-                <value>translator</value>
-            </list>
-        </property>
-    </bean>
+    <context:component-scan base-package="ua.nure.social"/>
 
 </beans>

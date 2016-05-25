@@ -1,23 +1,30 @@
 package ua.nure.social.model.relationship;
 
-import ua.nure.social.model.BaseItem;
+import org.neo4j.ogm.annotation.EndNode;
+import org.neo4j.ogm.annotation.StartNode;
+import ua.nure.social.model.ModelEntity;
+import ua.nure.social.model.node.SocialNode;
 
-public class Relationship extends BaseItem {
+public abstract class Relationship extends ModelEntity {
 
-    private String from;
+    @StartNode
+    private SocialNode from;
 
-    private String to;
+    @EndNode
+    private SocialNode to;
 
-    public Relationship(String from, String to) {
-        this.from = from;
-        this.to = to;
+    public Relationship(SocialNode from, SocialNode to) {
+        if(!from.equals(to)) {
+            this.from = from;
+            this.to = to;
+        }
     }
 
-    public String getFrom() {
+    public SocialNode getFrom() {
         return from;
     }
 
-    public String getTo() {
+    public SocialNode getTo() {
         return to;
     }
 }

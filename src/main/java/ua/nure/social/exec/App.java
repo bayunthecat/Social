@@ -2,23 +2,31 @@ package ua.nure.social.exec;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.nure.social.analytics.mapper.TwitterUserMapper;
-import ua.nure.social.configuration.TwitterUserMapperConfiguration;
+import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
 import ua.nure.social.model.node.SocialNode;
+import ua.nure.social.net.client.TwitterClient;
+import ua.nure.social.repository.TwitterUserRepository;
 import ua.nure.social.util.ObjectLoader;
 
 public class App {
 
     public static void main(String[] args) {
-        String fileName = "serializedTwitterUser.obj";
+        String serializedUser = "serializedTwitterUser.obj";
+        String serializedFollowers = "serializedFollowers.obj";
         ObjectLoader loader = new ObjectLoader();
-        Object pacan = loader.loadObjectFromFile(fileName);
+        Object pacan = loader.loadObjectFromFile(serializedUser);
+
+        SocialNode node = new TwitterSimpleUserMapper().map(pacan);
+//        System.out.println("Done ==> " + pacan);
+//        System.out.println("Mapped ==> " + node);
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
+        TwitterUserRepository repo = ctx.getBean(TwitterUserRepository.class);
 
-        SocialNode node = new TwitterUserMapper((TwitterUserMapperConfiguration) ctx.getBean("twitterUserMapperConfiguration")).map(pacan);
-        System.out.println("Done ==> " + pacan);
-        System.out.println("Mapped ==> " + node);
+        TwitterClient client = new TwitterClient();
+        client.getUserById("sranysovok");
+
+        System.out.println("Done");
     }
 
 }

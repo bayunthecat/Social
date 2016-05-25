@@ -1,25 +1,40 @@
 package ua.nure.social.model.node;
 
-import ua.nure.social.model.relationship.Relationship;
+import org.neo4j.ogm.annotation.Relationship;
+import ua.nure.social.model.ModelEntity;
+import ua.nure.social.util.Const;
 
-import java.util.Collections;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SocialNode extends Node {
+public abstract class SocialNode extends ModelEntity {
 
-    private Set<Relationship> relationships;
+    @Relationship(type = Const.Neo4j.Relationship.FOLLOWER, direction = Relationship.INCOMING)
+    private List<SocialNode> followers;
 
-    public Relationship addRelationship(Relationship relationship) {
-        relationships.add(relationship);
-        return relationship;
+    @Relationship(type = Const.Neo4j.Relationship.FRIEND, direction = Relationship.UNDIRECTED)
+    private List<SocialNode> friends;
+
+    public SocialNode() {
+        followers = new ArrayList<>();
+        friends = new ArrayList<>();
     }
 
-    public Relationship removeRelationship(Relationship relationship) {
-        return relationships.remove(relationship) ? relationship : null;
+    public SocialNode addFollower(SocialNode follower) {
+        followers.add(follower);
+        return follower;
     }
 
-    public Set getRelationship() {
-        return Collections.unmodifiableSet(relationships);
+    public SocialNode addFriend(SocialNode friend) {
+        friends.add(friend);
+        return friend;
     }
 
+    public List<SocialNode> getFollowers() {
+        return followers;
+    }
+
+    public List<SocialNode> getFriends() {
+        return friends;
+    }
 }
