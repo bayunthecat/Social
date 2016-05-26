@@ -4,13 +4,13 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
 import ua.nure.social.model.node.SocialNode;
-import ua.nure.social.net.client.TwitterClient;
+import ua.nure.social.net.client.TwitterUserClient;
 import ua.nure.social.repository.TwitterUserRepository;
 import ua.nure.social.util.ObjectLoader;
 
 public class App {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws NoSuchMethodException {
         String serializedUser = "serializedTwitterUser.obj";
         String serializedFollowers = "serializedFollowers.obj";
         ObjectLoader loader = new ObjectLoader();
@@ -23,8 +23,8 @@ public class App {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
         TwitterUserRepository repo = ctx.getBean(TwitterUserRepository.class);
 
-        TwitterClient client = new TwitterClient();
-        client.getUserById("sranysovok");
+//        TwitterUserClient client = new TwitterClient();
+//        client.getUserById("sranysovok");
 
         System.out.println("Done");
     }

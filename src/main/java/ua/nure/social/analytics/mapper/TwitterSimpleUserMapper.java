@@ -16,7 +16,6 @@ public class TwitterSimpleUserMapper implements Mapper<SimpleTwitterUser> {
         User twitterUser = (User) object;
         SimpleTwitterUser user = new SimpleTwitterUser();
         user.setScreenName(twitterUser.getScreenName());
-        user.setCountry(twitterUser.getLocation());
         user.setId(user.getId());
         return user;
     }

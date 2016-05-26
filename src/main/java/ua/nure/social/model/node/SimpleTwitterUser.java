@@ -10,22 +10,11 @@ public class SimpleTwitterUser extends SocialNode {
     @Property(name = Const.Neo4j.Property.SCREEN_NAME)
     private String screenName;
 
-    @Property(name = Const.Neo4j.Property.COUNTRY)
-    private String country;
-
     public String getScreenName() {
         return screenName;
     }
 
-    public String getCountry() {
-        return country;
-    }
-
     public void setScreenName(String screenName) {
         this.screenName = screenName;
-    }
-
-    public void setCountry(String country) {
-        this.country = country;
     }
 }

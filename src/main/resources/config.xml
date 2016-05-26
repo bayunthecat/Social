@@ -13,4 +13,35 @@
 
     <context:component-scan base-package="ua.nure.social"/>
 
+    <bean id="twitterUserClient" scope="prototype" class="ua.nure.social.net.client.TwitterUserClient"/>
+
+    <bean id="twitterPagableTransformer" class="ua.nure.social.net.tools.Twitter4JPagableResponseTransformer"/>
+
+    <bean id="randomGenerator" class="ua.nure.social.util.RandomGenerator"/>
+
+    <bean id="randomUserClient" scope="prototype" class="ua.nure.social.net.client.RandomTwitterSocialUserClient"/>
+
+    <bean id="twitterScreenNameExtractor" class="ua.nure.social.analytics.builder.tools.TwitterSreenNameExtractor"/>
+
+    <bean id="randomTwitterClientConfigurator" class="ua.nure.social.net.configuration.RandomTwitterClientConfigurator">
+        <property name="nameLengthRange">
+            <list>
+                <value>4</value>
+                <value>10</value>
+            </list>
+        </property>
+        <property name="followersCountRange">
+            <list>
+                <value>2</value>
+                <value>10</value>
+            </list>
+        </property>
+        <property name="friendCountRange">
+            <list>
+                <value>4</value>
+                <value>10</value>
+            </list>
+        </property>
+    </bean>
+
 </beans>

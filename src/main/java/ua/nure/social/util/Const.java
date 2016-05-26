@@ -55,6 +55,37 @@ public class Const {
         }
     }
 
+    public static class Spring {
+
+        public static class Components {
+
+            public static final String TWITTER_PAGABLE_TRANSFORMER = "twitterPagableTransformer";
+
+            private Components() {
+            }
+        }
+
+        public static class Scope {
+
+            public static final String PROTOTYPE = "prototype";
+
+            private Scope() {
+            }
+        }
+
+        private Spring() {
+        }
+    }
+
+    public static class App {
+
+        public static final int DEFAULT_DEPTH = 2;
+
+        private App() {
+
+        }
+    }
+
     private Const() {
     }
 }
