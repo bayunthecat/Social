@@ -11,7 +11,7 @@ import ua.nure.social.util.Const;
 public class DepthSocialGraphBuilder implements SocialGraphBuilder {
 
     @Autowired
-    private SocialUserClient<SocialNode> client;
+    private SocialUserClient<SocialNode, ?> client;
 
     @Autowired
     private FieldExtractor extractor;
@@ -29,7 +29,6 @@ public class DepthSocialGraphBuilder implements SocialGraphBuilder {
 
     private void fetchFollowers(SocialNode node) {
         Object id = extractor.extract(node);
-        client.getFollowers(id, 200);
     }
 
     private String extractScreenName(Object... params) {

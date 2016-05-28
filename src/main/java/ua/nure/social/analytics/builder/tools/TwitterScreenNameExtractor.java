@@ -4,7 +4,7 @@ import ua.nure.social.exception.FieldExtractorException;
 import ua.nure.social.model.node.SimpleTwitterUser;
 import ua.nure.social.model.node.SocialNode;
 
-public class TwitterSreenNameExtractor implements FieldExtractor {
+public class TwitterScreenNameExtractor implements FieldExtractor {
 
     @Override
     public Object extract(SocialNode node) {

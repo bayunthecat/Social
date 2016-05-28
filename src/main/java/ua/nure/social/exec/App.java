@@ -1,5 +1,6 @@
 package ua.nure.social.exec;
 
+import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
@@ -11,6 +12,7 @@ import ua.nure.social.util.ObjectLoader;
 public class App {
 
     public static void main(String[] args) throws NoSuchMethodException {
+        Logger LOG =Logger.getLogger(App.class);
         String serializedUser = "serializedTwitterUser.obj";
         String serializedFollowers = "serializedFollowers.obj";
         ObjectLoader loader = new ObjectLoader();

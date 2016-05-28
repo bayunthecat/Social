@@ -1,13 +1,14 @@
 package ua.nure.social.net.client;
 
-import java.util.List;
+import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
+import ua.nure.social.net.tools.wrapper.PageCursor;
 
-public interface SocialUserClient<T> {
+public interface SocialUserClient<T, C> {
 
     T getUserById(String id);
 
-    List<T> getFollowers(Object id, int count);
+    PagableResponseWrapper<T> getFollowers(Object id, PageCursor<C> cursor, int count);
 
-    List<T> getFriends(Object id, int count);
+    PagableResponseWrapper<T> getFriends(Object id, PageCursor<C> cursor ,int count);
 
 }

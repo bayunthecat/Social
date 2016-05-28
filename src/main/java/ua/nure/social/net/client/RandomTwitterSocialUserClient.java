@@ -4,12 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.nure.social.model.node.SimpleTwitterUser;
 import ua.nure.social.model.node.SocialNode;
 import ua.nure.social.net.configuration.RandomTwitterClientConfigurator;
+import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
+import ua.nure.social.net.tools.wrapper.PageCursor;
+import ua.nure.social.net.tools.wrapper.random.RandomPageCursor;
+import ua.nure.social.net.tools.wrapper.twitter.TwitterPagableResponseWrapper;
 import ua.nure.social.util.RandomGenerator;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class RandomTwitterSocialUserClient implements SocialUserClient<SocialNode>{
+public class RandomTwitterSocialUserClient implements SocialUserClient<SocialNode, Long>{
 
     @Autowired
     private RandomGenerator generator;
@@ -23,13 +27,15 @@ public class RandomTwitterSocialUserClient implements SocialUserClient<SocialNod
     }
 
     @Override
-    public List<SocialNode> getFollowers(Object id, int count) {
-        return getSocialNodesList(configurator.getFollowersLower(), configurator.getFollowersHigher());
+    public PagableResponseWrapper<SocialNode> getFollowers(Object id, PageCursor cursor ,int count) {
+        List<SocialNode> nodes = getSocialNodesList(configurator.getFollowersLower(), configurator.getFollowersHigher());
+        return new TwitterPagableResponseWrapper(nodes, cursor);
     }
 
     @Override
-    public List<SocialNode> getFriends(Object id, int count) {
-        return getSocialNodesList(configurator.getFriendsLower(), configurator.getFriendsHigher());
+    public PagableResponseWrapper<SocialNode> getFriends(Object id, PageCursor cursor, int count) {
+        List<SocialNode> nodes = getSocialNodesList(configurator.getFriendsLower(), configurator.getFriendsHigher());
+        return new TwitterPagableResponseWrapper(nodes, cursor);
     }
 
     private SocialNode getRandomTwitterUser() {

@@ -9,20 +9,25 @@ import twitter4j.User;
 import twitter4j.TwitterException;
 import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
 import ua.nure.social.model.node.SocialNode;
-import ua.nure.social.net.tools.ResponseTransformer;
+import ua.nure.social.net.tools.converter.ResponseConverter;
+import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
+import ua.nure.social.net.tools.wrapper.PageCursor;
+import ua.nure.social.net.tools.wrapper.twitter.TwitterPagableResponseWrapper;
+import ua.nure.social.net.tools.wrapper.twitter.TwitterPageCursor;
 import ua.nure.social.util.Const;
 
 import javax.annotation.Resource;
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class TwitterUserClient implements SocialUserClient<SocialNode> {
+public class TwitterUserClient implements SocialUserClient<SocialNode, Long> {
 
     private static Logger LOG = Logger.getLogger(TwitterUserClient.class);
 
     @Autowired
     @Resource(name = Const.Spring.Components.TWITTER_PAGABLE_TRANSFORMER)
-    private ResponseTransformer<PagableResponseList<User>, List<SocialNode>> responseTransformer;
+    private ResponseConverter<PagableResponseList<User>, List<User>> responseConverter;
 
     private Twitter twitter = TwitterFactory.getSingleton();
 
@@ -37,24 +42,34 @@ public class TwitterUserClient implements SocialUserClient<SocialNode> {
         return user;
     }
 
-    //TODO session for continuous fetching. Both for friends and followers.
     @Override
-    public List<SocialNode> getFollowers(Object screenName, int count) {
+    public PagableResponseWrapper<SocialNode> getFollowers(Object screenName, PageCursor<Long> cursor, int count) {
         try {
-            return responseTransformer.transform(twitter.getFollowersList((String) screenName, -1, count));
+            PagableResponseList<User> response = twitter.getFollowersList((String) screenName, cursor.getCursor(), count);
+            List<User> users = responseConverter.convert(response);
+            return new TwitterPagableResponseWrapper(mapList(users), new TwitterPageCursor(response.getNextCursor()));
         } catch (TwitterException e) {
             LOG.error("Failed to fetch followers for user ==> " + screenName, e);
         }
-        return Collections.emptyList();
+        return null;
     }
 
     @Override
-    public List<SocialNode> getFriends(Object screenName, int count) {
+    public PagableResponseWrapper<SocialNode> getFriends(Object screenName, PageCursor<Long> cursor, int count) {
         try {
-            return responseTransformer.transform(twitter.getFollowersList((String) screenName, -1, count));
+            PagableResponseList<User> response = twitter.getFriendsList((String) screenName, cursor.getCursor(), count);
+            List<User> users = responseConverter.convert(response);
+            return new TwitterPagableResponseWrapper(mapList(users), new TwitterPageCursor(response.getNextCursor()));
         } catch (TwitterException e) {
             LOG.error("Failed to fetch friends for user ==> " + screenName, e);
         }
-        return Collections.emptyList();
+        return null;
+    }
+
+    private List<SocialNode> mapList(List<User> users) {
+        List<SocialNode> list = new ArrayList<>();
+        TwitterSimpleUserMapper mapper = new TwitterSimpleUserMapper();
+        list.addAll(users.stream().map(mapper::map).collect(Collectors.toList()));
+        return list;
     }
 }
