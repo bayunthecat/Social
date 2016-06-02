@@ -13,6 +13,19 @@
 
     <context:component-scan base-package="ua.nure.social"/>
 
+    <bean id="neoSimpleTwitterUserRepository" class="ua.nure.social.repository.NeoSimpleTwitterUserRepository">
+        <property name="screenNameExtractor" ref="twitterScreenNameExtractor"/>
+    </bean>
+
+    <bean id="depthSocialGraphBuilder" class="ua.nure.social.analytics.builder.DepthSocialGraphBuilder">
+        <property name="client" ref="randomUserClient"/>
+        <property name="extractor" ref="twitterScreenNameExtractor"/>
+        <property name="repository" ref="neoSimpleTwitterUserRepository"/>
+        <property name="socialIdExtractor" ref="twitterSocialIdUserExtractor"/>
+        <property name="pageCursorFactory" ref="randomPageCursorFactory"/>
+        <property name="depth" value="1"/>
+    </bean>
+
     <bean id="twitterUserClient" scope="prototype" class="ua.nure.social.net.client.TwitterUserClient"/>
 
     <bean id="twitterPagableTransformer" class="ua.nure.social.net.tools.converter.Twitter4JPagableResponseConverter"/>
@@ -21,25 +34,38 @@
 
     <bean id="randomUserClient" scope="prototype" class="ua.nure.social.net.client.RandomTwitterSocialUserClient"/>
 
-    <bean id="twitterScreenNameExtractor" class="ua.nure.social.analytics.builder.tools.TwitterScreenNameExtractor"/>
+    <bean id="twitterSocialIdUserExtractor" class="ua.nure.social.analytics.builder.tools.extractor.parameter.SocialIdParameterExtractor">
+        <property name="parameterName" value="screenName"/>
+    </bean>
+
+    <bean id="twitterScreenNameExtractor" class="ua.nure.social.analytics.builder.tools.extractor.field.TwitterScreenNameExtractor"/>
+
+    <bean id="builderParameterExtractor" class="ua.nure.social.analytics.builder.tools.extractor.parameter.SocialIdParameterExtractor">
+        <property name="parameterName" value="screenName"/>
+    </bean>
+
+    <bean id="twitterPageCursorFactory" class="ua.nure.social.net.tools.cursor.twitter.TwitterPageCursorFactory"/>
+
+    <bean id="randomPageCursorFactory" class="ua.nure.social.net.tools.cursor.random.RandomPageCursorFactory"/>
 
     <bean id="randomTwitterClientConfigurator" class="ua.nure.social.net.configuration.RandomTwitterClientConfigurator">
+        <property name="alphabet" value="abcdefg"/>
         <property name="nameLengthRange">
             <list>
-                <value>4</value>
-                <value>10</value>
+                <value>1</value>
+                <value>2</value>
             </list>
         </property>
         <property name="followersCountRange">
             <list>
                 <value>2</value>
-                <value>10</value>
+                <value>3</value>
             </list>
         </property>
         <property name="friendsCountRange">
             <list>
-                <value>4</value>
-                <value>10</value>
+                <value>2</value>
+                <value>3</value>
             </list>
         </property>
     </bean>

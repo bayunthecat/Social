@@ -4,6 +4,7 @@ import org.neo4j.ogm.annotation.GraphId;
 import ua.nure.social.util.Const;
 
 import java.lang.reflect.Field;
+import java.util.Collection;
 import java.util.StringJoiner;
 
 public abstract class ModelEntity {
@@ -28,14 +29,22 @@ public abstract class ModelEntity {
 
     private void classToString(StringJoiner joiner, Class<?> clazz) {
         for(Field field : clazz.getDeclaredFields()) {
-            joiner.add(field.getName() + Const.COLON + accessField(field));
+            joiner.add(field.getName() + Const.COLON + getString(field));
         }
         if(clazz.getSuperclass() != Object.class) {
             classToString(joiner, clazz.getSuperclass());
         }
     }
 
-    private String accessField(Field field) {
+    private String getString(Field field) {
+        Object fieldValue = accessField(field);
+        if(fieldValue instanceof Collection) {
+            return String.valueOf(((Collection)accessField(field)).size());
+        }
+        return fieldValue != null ? fieldValue.toString() : null;
+    }
+
+    private Object accessField(Field field) {
         try {
             Object fieldValue;
             if(!field.isAccessible()) {
@@ -45,7 +54,7 @@ public abstract class ModelEntity {
             } else {
                 fieldValue = field.get(this);
             }
-            return fieldValue != null ? fieldValue.toString() : null;
+            return fieldValue;
         } catch (IllegalAccessException exception) {
             return exception.getMessage();
         }

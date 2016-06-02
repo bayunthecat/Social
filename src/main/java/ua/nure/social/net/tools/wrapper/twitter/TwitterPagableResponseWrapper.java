@@ -2,7 +2,7 @@ package ua.nure.social.net.tools.wrapper.twitter;
 
 import ua.nure.social.model.node.SocialNode;
 import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
-import ua.nure.social.net.tools.wrapper.PageCursor;
+import ua.nure.social.net.tools.cursor.PageCursor;
 
 import java.util.List;
 

@@ -79,7 +79,7 @@ public class Const {
 
     public static class App {
 
-        public static final int DEFAULT_DEPTH = 2;
+        public static final int DEFAULT_DEPTH = 3;
 
         private App() {
 

@@ -5,6 +5,7 @@ import ua.nure.social.model.ModelEntity;
 import ua.nure.social.util.Const;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public abstract class SocialNode extends ModelEntity {
@@ -28,6 +29,16 @@ public abstract class SocialNode extends ModelEntity {
     public SocialNode addFriend(SocialNode friend) {
         friends.add(friend);
         return friend;
+    }
+
+    public List<SocialNode> addFollowers(Collection<SocialNode> followers) {
+        this.followers.addAll(followers);
+        return new ArrayList<>(followers);
+    }
+
+    public List<SocialNode> addFriends(Collection<SocialNode> friends) {
+        this.friends.addAll(friends);
+        return new ArrayList<>(friends);
     }
 
     public List<SocialNode> getFollowers() {

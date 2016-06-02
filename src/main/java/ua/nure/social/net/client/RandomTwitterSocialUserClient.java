@@ -4,9 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import ua.nure.social.model.node.SimpleTwitterUser;
 import ua.nure.social.model.node.SocialNode;
 import ua.nure.social.net.configuration.RandomTwitterClientConfigurator;
+import ua.nure.social.net.tools.cursor.random.RandomPageCursor;
 import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
-import ua.nure.social.net.tools.wrapper.PageCursor;
-import ua.nure.social.net.tools.wrapper.random.RandomPageCursor;
+import ua.nure.social.net.tools.cursor.PageCursor;
 import ua.nure.social.net.tools.wrapper.twitter.TwitterPagableResponseWrapper;
 import ua.nure.social.util.RandomGenerator;
 
@@ -22,26 +22,26 @@ public class RandomTwitterSocialUserClient implements SocialUserClient<SocialNod
     private RandomTwitterClientConfigurator configurator;
 
     @Override
-    public SocialNode getUserById(String id) {
+    public SocialNode getUserById(Object id) {
         return getRandomTwitterUser();
     }
 
     @Override
     public PagableResponseWrapper<SocialNode> getFollowers(Object id, PageCursor cursor ,int count) {
         List<SocialNode> nodes = getSocialNodesList(configurator.getFollowersLower(), configurator.getFollowersHigher());
-        return new TwitterPagableResponseWrapper(nodes, cursor);
+        return new TwitterPagableResponseWrapper(nodes, new RandomPageCursor(true));
     }
 
     @Override
     public PagableResponseWrapper<SocialNode> getFriends(Object id, PageCursor cursor, int count) {
         List<SocialNode> nodes = getSocialNodesList(configurator.getFriendsLower(), configurator.getFriendsHigher());
-        return new TwitterPagableResponseWrapper(nodes, cursor);
+        return new TwitterPagableResponseWrapper(nodes, new RandomPageCursor(true));
     }
 
     private SocialNode getRandomTwitterUser() {
         SimpleTwitterUser node = new SimpleTwitterUser();
         node.setScreenName(generator.generateName(
-                configurator.getNameLengthLower(), configurator.getNameLengthHigher()));
+                configurator.getNameLengthLower(), configurator.getNameLengthHigher(), configurator.getAlphabet()));
         return node;
     }
 

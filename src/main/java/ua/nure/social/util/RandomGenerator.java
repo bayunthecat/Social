@@ -6,15 +6,15 @@ public class RandomGenerator {
 
     private Random random = new Random();
 
-    public String generateName(int from, int to) {
+    public String generateName(int from, int to, char[] alphabet) {
         char[] name = new char[getInt(from, to)];
         for(int i = 0; i < name.length; i++) {
-            name[i] = (char)getInt(97, 122);
+            name[i] = alphabet[getInt(0, alphabet.length - 1)];
         }
         return new String(name);
     }
 
     public int getInt(int from, int to) {
-        return random.nextInt(from - to + 1) + to;
+        return random.nextInt(to - from + 1) + from;
     }
 }

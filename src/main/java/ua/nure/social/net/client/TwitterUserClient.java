@@ -11,9 +11,9 @@ import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
 import ua.nure.social.model.node.SocialNode;
 import ua.nure.social.net.tools.converter.ResponseConverter;
 import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
-import ua.nure.social.net.tools.wrapper.PageCursor;
+import ua.nure.social.net.tools.cursor.PageCursor;
 import ua.nure.social.net.tools.wrapper.twitter.TwitterPagableResponseWrapper;
-import ua.nure.social.net.tools.wrapper.twitter.TwitterPageCursor;
+import ua.nure.social.net.tools.cursor.twitter.TwitterPageCursor;
 import ua.nure.social.util.Const;
 
 import javax.annotation.Resource;
@@ -21,7 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class TwitterUserClient implements SocialUserClient<SocialNode, Long> {
+public abstract class TwitterUserClient implements SocialUserClient<SocialNode, Long> {
 
     private static Logger LOG = Logger.getLogger(TwitterUserClient.class);
 
@@ -29,13 +29,13 @@ public class TwitterUserClient implements SocialUserClient<SocialNode, Long> {
     @Resource(name = Const.Spring.Components.TWITTER_PAGABLE_TRANSFORMER)
     private ResponseConverter<PagableResponseList<User>, List<User>> responseConverter;
 
-    private Twitter twitter = TwitterFactory.getSingleton();
+    protected Twitter twitter = TwitterFactory.getSingleton();
 
     @Override
-    public SocialNode getUserById(String screenName) {
+    public SocialNode getUserById(Object screenName) {
         SocialNode user = null;
         try {
-            user = new TwitterSimpleUserMapper().map(twitter.showUser(screenName));
+            user = new TwitterSimpleUserMapper().map(twitter.showUser((String) screenName));
         } catch (TwitterException e) {
             LOG.error("Failed to fetch user ==> " + screenName, e);
         }

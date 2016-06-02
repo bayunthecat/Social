@@ -1,12 +1,17 @@
 package ua.nure.social.net.configuration;
 
+@SuppressWarnings("unused")
 public class RandomTwitterClientConfigurator {
+
+    private static final String SPLIT_REGEX = "(?!^)";
 
     private int[] nameLengthRange;
 
     private int[] followersCountRange;
 
     private int[] friendsCountRange;
+
+    private char[] alphabet;
 
     public int getNameLengthLower() {
         return nameLengthRange[0];
@@ -30,6 +35,18 @@ public class RandomTwitterClientConfigurator {
 
     public int getFriendsHigher() {
         return friendsCountRange[1];
+    }
+
+    public char[] getAlphabet() {
+        return alphabet;
+    }
+
+    public void setAlphabet(String alphabet) {
+        String[] splitArray = alphabet.split(SPLIT_REGEX);
+        this.alphabet = new char[splitArray.length];
+        for(int i = 0; i < splitArray.length; i++) {
+            splitArray[i].getChars(0, 1, this.alphabet, i);
+        }
     }
 
     public void setNameLengthRange(int[] nameLengthRange) {

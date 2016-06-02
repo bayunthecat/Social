@@ -1,34 +1,26 @@
 package ua.nure.social.exec;
 
-import org.apache.log4j.Logger;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
-import ua.nure.social.model.node.SocialNode;
-import ua.nure.social.net.client.TwitterUserClient;
-import ua.nure.social.repository.TwitterUserRepository;
-import ua.nure.social.util.ObjectLoader;
+import ua.nure.social.analytics.builder.api.SocialGraphBuilder;
+import ua.nure.social.model.node.SimpleTwitterUser;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class App {
 
     public static void main(String[] args) throws NoSuchMethodException {
-        Logger LOG =Logger.getLogger(App.class);
-        String serializedUser = "serializedTwitterUser.obj";
-        String serializedFollowers = "serializedFollowers.obj";
-        ObjectLoader loader = new ObjectLoader();
-        Object pacan = loader.loadObjectFromFile(serializedUser);
-
-        SocialNode node = new TwitterSimpleUserMapper().map(pacan);
-//        System.out.println("Done ==> " + pacan);
-//        System.out.println("Mapped ==> " + node);
 
         ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
-        TwitterUserRepository repo = ctx.getBean(TwitterUserRepository.class);
+        SocialGraphBuilder builder = (SocialGraphBuilder) ctx.getBean("depthSocialGraphBuilder");
 
-//        TwitterUserClient client = new TwitterClient();
-//        client.getUserById("sranysovok");
+        Map<String, Object> params = new HashMap<>();
+        params.put("screenName", "vasya");
 
-        System.out.println("Done");
+        SimpleTwitterUser node = (SimpleTwitterUser) builder.build(params);
+
+        System.out.println("Done ==> " + node);
     }
 
 }
