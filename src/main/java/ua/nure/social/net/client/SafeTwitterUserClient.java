@@ -5,6 +5,7 @@ import twitter4j.RateLimitStatus;
 import twitter4j.TwitterException;
 import ua.nure.social.model.node.SocialNode;
 import ua.nure.social.net.tools.cursor.PageCursor;
+import ua.nure.social.net.tools.limit.CustomRateLimitStatus;
 import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;
 
 import java.util.Map;
@@ -13,8 +14,11 @@ public class SafeTwitterUserClient extends TwitterUserClient {
 
     private static final Logger LOG = Logger.getLogger(SafeTwitterUserClient.class);
 
+    private Map<String, RateLimitStatus> limits;
+
     @Override
     public SocialNode getUserById(Object screenName) {
+        limitsReached("/friends/");
         return super.getUserById(screenName);
     }
 
@@ -28,13 +32,26 @@ public class SafeTwitterUserClient extends TwitterUserClient {
         return super.getFriends(screenName, cursor, count);
     }
 
-    private Map<String, RateLimitStatus> getRateLimits() {
-        Map<String, RateLimitStatus> rateLimitStatus = null;
+    //TODO
+    private void limitsReached(String query) {
         try {
-            rateLimitStatus = twitter.getRateLimitStatus();
-        } catch (TwitterException e) {
-            LOG.error("Failed to get rate limit ==> " + e.getMessage());
+            if(getRateLimits(query, true).getRemaining() == 0) {
+                Thread.sleep(getRateLimits(query, false).getSecondsUntilReset());
+            }
+        } catch(InterruptedException e) {
+            LOG.error(e.getMessage(), e);
         }
-        return rateLimitStatus;
+    }
+
+    private RateLimitStatus getRateLimits(String query, boolean cacheFirst) {
+        try {
+            if(limits == null || !cacheFirst) {
+                limits = twitter.getRateLimitStatus();
+            }
+        } catch (TwitterException e) {
+            LOG.error("Failed to get rate limits", e);
+            return new CustomRateLimitStatus();
+        }
+        return limits.get(query);
     }
 }

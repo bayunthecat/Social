@@ -79,10 +79,13 @@ public class Const {
 
     public static class App {
 
-        public static final int DEFAULT_DEPTH = 3;
+        public static final int DEFAULT_DEPTH = 2;
+
+        public static final int SECONDS_TO_MILLIS = 1000;
+
+        public static final int SAFE_THRESHOLD = 1000;
 
         private App() {
-
         }
     }
 

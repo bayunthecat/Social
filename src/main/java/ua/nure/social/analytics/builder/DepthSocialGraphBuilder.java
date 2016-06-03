@@ -34,7 +34,7 @@ public class DepthSocialGraphBuilder implements SocialGraphBuilder {
 
     private PageCursorFactory pageCursorFactory;
 
-    private int depth = Const.App.DEFAULT_DEPTH;
+    private int depth = Const.App.SECONDS_TO_MILLIS;
 
     private int responseSize = 200;
 
