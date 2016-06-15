@@ -7,7 +7,7 @@ import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.User;
 import twitter4j.TwitterException;
-import ua.nure.social.analytics.mapper.TwitterSimpleUserMapper;
+import ua.nure.social.net.mapper.TwitterSimpleUserMapper;
 import ua.nure.social.model.node.SocialNode;
 import ua.nure.social.net.tools.converter.ResponseConverter;
 import ua.nure.social.net.tools.wrapper.PagableResponseWrapper;

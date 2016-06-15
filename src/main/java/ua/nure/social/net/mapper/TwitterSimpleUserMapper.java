@@ -1,4 +1,4 @@
-package ua.nure.social.analytics.mapper;
+package ua.nure.social.net.mapper;
 
 import twitter4j.User;
 import ua.nure.social.exception.InvalidMapper;

@@ -8,7 +8,6 @@ import twitter4j.TwitterException;
 import twitter4j.TwitterFactory;
 import ua.nure.social.analytics.builder.api.SocialGraphBuilder;
 import ua.nure.social.model.node.SimpleTwitterUser;
-import ua.nure.social.net.client.SafeTwitterUserClient;
 import ua.nure.social.util.ObjectLoader;
 
 import java.util.HashMap;
@@ -19,9 +18,7 @@ public class App {
 
     public static void main(String[] args) throws NoSuchMethodException {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("config.xml");
-        SafeTwitterUserClient client = (SafeTwitterUserClient) ctx.getBean("safeTwitterUserClient");
-        Map<String, RateLimitStatus> map = getRateLimitsSample("rateLimitsMap.obj");
-        System.out.println(map.get("/application/rate_limit_status").getSecondsUntilReset());
+        callBuilder(ctx);
     }
 
     private static void callBuilder(ApplicationContext ctx) {

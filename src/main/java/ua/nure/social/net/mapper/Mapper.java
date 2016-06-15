@@ -1,4 +1,4 @@
-package ua.nure.social.analytics.mapper;
+package ua.nure.social.net.mapper;
 
 import ua.nure.social.model.ModelEntity;
 
